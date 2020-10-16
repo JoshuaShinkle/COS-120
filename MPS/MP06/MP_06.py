@@ -170,17 +170,21 @@ def checkers():
     newGame(t,wn,board)
     showBoard(board)
     currentPlayer="black"
-    
+    rowLetters = "ABCDEFGH"
+
     while(1):
         move=getValidMove(currentPlayer,board,validSquaresList)
+        if move == "QUIT":
+            return
         if currentPlayer == "black":
-            letterPlayer = "b"
+            letterCurrentPlayer = "b"
         else:
-            letterPlayer = "r"
-        #print(board[2][7])
-        board[2][5] = "b"
-        showBoard(board)
-        if move !="QUIT":
+            letterCurrentPlayer = "r"
+            
+        selectedCheckerRow = rowLetters.find(move[0])
+        selectedCheckerCol = int(move[1])
+
+        if letterCurrentPlayer == board[selectedCheckerRow][selectedCheckerCol]:
             fromRow=ord(move[0])-65
             fromCol=int(move[1])
             toRow=ord(move[3])-65
@@ -190,8 +194,6 @@ def checkers():
             board[toRow][toCol]=currentPlayer[0]
             showBoard(board)
             currentPlayer=switchPlayer(currentPlayer)
-        else:
-            return
 
 
 checkers()

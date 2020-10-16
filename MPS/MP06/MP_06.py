@@ -137,16 +137,40 @@ def showBoard(board):
         print()
     print()
 
-def getValidMove(player,board,validSquaresList):
-    selectedChecker = input("Enter location of the checker you want to move-> ")
-    if selectedChecker.lower() == "quit":
-        fromTo = "QUIT"
-    else:
-        moveLocation = input("Enter location of the square you want to move to-> ")
-        if moveLocation.lower() == "quit":
+def getValidMove(player,board,validSquaresList):    
+    while(1):
+        selectedChecker = input("Enter location of the checker you want to move-> ").upper()
+        if selectedChecker == "QUIT":
             fromTo = "QUIT"
-        else:
-            fromTo = selectedChecker + ":" + moveLocation
+            break
+        if len(selectedChecker) == 2:
+            isLetterBetween = "A" <= selectedChecker[0] <= "H"
+            if selectedChecker[1].isdigit():
+                isNumberBetween = 0 <= int(selectedChecker[1]) <= 7
+                if isLetterBetween:
+                    if isNumberBetween:
+                        break
+
+    if selectedChecker == "QUIT":
+        return selectedChecker
+
+    while(1):
+        moveLocation = input("Enter location of the square you want to move to-> ").upper()
+        if moveLocation == "QUIT":
+            fromTo = "QUIT"
+            break
+        if len(moveLocation) == 2:
+            isLetterBetween = "A" <= moveLocation[0] <= "H"
+            if moveLocation[1].isdigit():
+                isNumberBetween = 0 <= int(moveLocation[1]) <= 7
+                if isLetterBetween:
+                    if isNumberBetween:
+                        break
+    
+    if moveLocation == "QUIT":
+        return moveLocation
+        
+    fromTo = selectedChecker + ":" + moveLocation
     return fromTo
 
 def switchPlayer(currentPlayer):
@@ -184,7 +208,10 @@ def checkers():
         selectedCheckerRow = rowLetters.find(move[0])
         selectedCheckerCol = int(move[1])
 
-        if letterCurrentPlayer == board[selectedCheckerRow][selectedCheckerCol]:
+        selectedMoveRow = rowLetters.find(move[3])
+        selectedMoveCol = int(move[4])
+
+        if letterCurrentPlayer == board[selectedCheckerRow][selectedCheckerCol] and board[selectedMoveRow][selectedMoveCol] == "":
             fromRow=ord(move[0])-65
             fromCol=int(move[1])
             toRow=ord(move[3])-65
